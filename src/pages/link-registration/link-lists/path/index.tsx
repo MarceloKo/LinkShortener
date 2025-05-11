@@ -16,7 +16,7 @@ export default function Path({ data }: { data: PathProps }) {
             </div>
             <div className="flex items-center gap-5 justify-end">
                 <p className="text-gray-500 text-center">{countAccess} acessos</p>
-                <div className="flex gap-2 flex-wrap justify-end w-min sm:w-auto sm:flex-nowrap">
+                <div className="flex gap-2 flex-wrap justify-end w-min md:w-auto md:flex-nowrap">
                     <Button typeButton="secondary"><FiCopy size={20} /></Button>
                     <Button typeButton="secondary"><RiDeleteBin3Line size={20} /></Button>
                 </div>

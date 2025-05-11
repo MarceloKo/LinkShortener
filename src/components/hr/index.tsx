@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 
 
-type HrProps = {
+interface HrProps {
     className?: string;
 }
 export default function Hr({ className }: HrProps) {

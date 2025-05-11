@@ -3,7 +3,7 @@ import logo from '../../../assets/logo-icon.svg'
 export default function LinkRedirecting() {
     return (
         <div className='flex flex-col items-center text-center justify-center gap-10'>
-            <img src={logo} width={100} className="logo" alt="Não encontrado" />
+            <img src={logo} width={80} className="logo" alt="Não encontrado" />
 
             <h2 className='text-2xl font-bold'>Redirecionando...</h2>
             <div>
