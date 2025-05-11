@@ -9,7 +9,7 @@ export default function LinkNotFound() {
             <img src={errorLogo} className="logo" alt="Não encontrado" />
 
             <h2 className='text-2xl font-bold'>Link não encontrado</h2>
-            <p>O link que você está tentando acessar não existe, foi removido ou é uma URL inválida. Saiba mais em <a href='#' onClick={handleBack} className='text-blue-600'>{url}</a></p>
+            <p>O link que você está tentando acessar não existe, foi removido ou é uma URL inválida. Saiba mais em <a href='#' onClick={handleBack} className='text-blue-700'>{url}</a></p>
         </div>
     )
 }

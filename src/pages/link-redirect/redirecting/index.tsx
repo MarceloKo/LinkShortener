@@ -9,7 +9,7 @@ export default function LinkRedirecting() {
             <div>
 
                 <p>O link será aberto automaticamente em alguns instantes. </p>
-                <p>Não foi redirecionado? <a href='/' className='text-blue-600'>Acesse aqui</a></p>
+                <p>Não foi redirecionado? <a href='/' className='text-blue-700'>Acesse aqui</a></p>
             </div>
         </div>
 

@@ -7,14 +7,14 @@ export default function PageNotFound() {
 
     return (
         <div className="flex justify-center items-center h-screen px-5">
-            <div className="flex flex-col items-center text-center justify-center gap-10 rounded-lg bg-gray-100 w-full max-w-2xl p-20">
+            <div className="flex flex-col items-center text-center justify-center gap-10 rounded-lg bg-white w-full max-w-2xl p-20">
                 <img src={errorLogo} className="logo" alt="Não encontrado" />
 
-                <h2 className='text-2xl font-bold'>Página não encontrada</h2>
+                <h2>Página não encontrada</h2>
                 <div>
 
                     <p>Ops! A página que você está procurando não foi encontrada.</p>
-                    <a href="#" onClick={handleBack} className='text-blue-600'>Voltar para a página inicial.</a>
+                    <a href="#" onClick={handleBack} className='text-blue-700'>Voltar para a página inicial.</a>
 
                 </div>
             </div>
