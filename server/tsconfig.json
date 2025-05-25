@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "strict": true,
+    "sourceMap": true,
+    "outDir": "./build",
+    "strictPropertyInitialization": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "inlineSources": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    // -----------
+    "target": "ES2022",
+    "module": "commonjs",
+    "rootDir": "./",
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@controllers/*": ["./src/controllers/*"],
+      "@prisma/*": ["./prisma/*"],
+      "@zod/*": ["./src/zod/*"],
+      "@/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}

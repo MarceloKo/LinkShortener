@@ -1,0 +1,79 @@
+import { env } from '@/zod/env'
+import { fastifyCors } from '@fastify/cors'
+import { fastifySwagger } from '@fastify/swagger'
+import { fastifySwaggerUi } from '@fastify/swagger-ui'
+import { fastify } from 'fastify'
+import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
+
+import { PrismaService } from '@prisma/prisma-service'
+
+import handleError from './utils/api-handle-errors'
+import { LinkCreateRoute } from './http/links/link-create'
+import { LinkDeleteRoute } from './http/links/link-delete'
+import { LinkFindAllRoute } from './http/links/link-find-all'
+import { LinkFindByIdRoute } from './http/links/link-find'
+import { LinkIncrementAccessCountRoute } from './http/links/link-increment-access'
+import { ExportAllLinksToCsvRoute } from './http/reports/export-all-links-to-csv'
+const server = fastify({
+	logger: true,
+})
+
+server.setValidatorCompiler(validatorCompiler)
+server.setSerializerCompiler(serializerCompiler)
+server.setErrorHandler(handleError)
+server.register(fastifyCors, { origin: '*' })
+
+server.register(fastifySwagger, {
+	logLevel: 'silent',
+	openapi: {
+		info: {
+			title: 'LinkShortner API',
+			version: '1.0.0',
+		},
+		components: {
+			securitySchemes: {
+				clientId: {
+					type: 'apiKey',
+					name: 'clientId',
+					in: 'header',
+				},
+				clientSecret: {
+					type: 'apiKey',
+					name: 'clientSecret',
+					in: 'header',
+				},
+			},
+		},
+		security: [{ clientId: [] }, { clientSecret: [] }],
+		servers: [],
+	},
+	transform: jsonSchemaTransform,
+})
+server.register(fastifySwaggerUi, {
+	routePrefix: '/docs',
+	logLevel: 'silent',
+})
+
+
+server.get('/', async (_, reply) => reply.send({
+	message: 'API is running',
+}))
+
+server.register(LinkCreateRoute)
+server.register(LinkDeleteRoute)
+server.register(LinkFindAllRoute)
+server.register(LinkFindByIdRoute)
+server.register(LinkIncrementAccessCountRoute)
+server.register(ExportAllLinksToCsvRoute)
+
+
+server
+	.listen({ port: env.PORT || 8000, host: '0.0.0.0' })
+	.then(async () => {
+		await PrismaService.$connect()
+		console.info(`[ 🚀 RUNNING MODE ]: ${env.NODE_ENV.toUpperCase()}\n`)
+	})
+	.catch(async err => {
+		console.error(err)
+		await PrismaService.$disconnect()
+	})
