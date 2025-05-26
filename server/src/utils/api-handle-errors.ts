@@ -18,12 +18,7 @@ export default function handleError(error: FastifyError, request: FastifyRequest
 	}
 	if (error) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
-			// if (error?.meta) {
-			//     const errorMessage = JSON.stringify(error.meta)
-			//     dataError.messageErro = errorMessage
-			//     console.log(`🔥 [ERROR PRISMA] ${errorMessage}`)
-			//     return reply.status(406).send(responseFail([errorMessage]))
-			// }
+
 			console.log(`🔥 [ERROR PRISMA] ${error?.message}`)
 			dataError.messageErro = error?.message || 'Erro interno CODE:1'
 
@@ -43,16 +38,15 @@ export default function handleError(error: FastifyError, request: FastifyRequest
 			console.log('🔥 [ERROR ZOD]', error.issues)
 			const erros = error.issues.map(issue => issue.message)
 			dataError.message = 'Erro de validação'
-			// dataError.messageErro = JSON.stringify(erros)
-			// console.log('🔥 [ERROR ZOD]', erros)
 			return reply.status(400).send(responseFail(erros))
 		}
 		if (hasZodFastifySchemaValidationErrors(error)) {
+			console.log('🔥 [ERROR ZOD FASTIFY]', error.validation)
 			const erros = error.validation.map(issue => `${error.validationContext}${issue.instancePath} - ${issue.message}`)
 			dataError.message = 'Erro de validação'
 			return reply.status(400).send(responseFail(erros))
 		}
 	}
 	console.log('🔥 [ERROR] Erro interno', error)
-	return reply.status(500).send(responseFail([error.message || error.message || 'Erro interno'], null, 500))
+	return reply.status(500).send(responseFail([error.message || error.message || 'Erro interno'], null))
 }

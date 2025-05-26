@@ -14,6 +14,7 @@ import { LinkFindAllRoute } from './http/links/link-find-all'
 import { LinkFindByIdRoute } from './http/links/link-find'
 import { LinkIncrementAccessCountRoute } from './http/links/link-increment-access'
 import { ExportAllLinksToCsvRoute } from './http/reports/export-all-links-to-csv'
+import { LinkFindByUrlShortRoute } from './http/links/link-find-url-short'
 const server = fastify({
 	logger: true,
 })
@@ -21,7 +22,7 @@ const server = fastify({
 server.setValidatorCompiler(validatorCompiler)
 server.setSerializerCompiler(serializerCompiler)
 server.setErrorHandler(handleError)
-server.register(fastifyCors, { origin: '*' })
+server.register(fastifyCors, { origin: [env.DOMAIN_WEB] })
 
 server.register(fastifySwagger, {
 	logLevel: 'silent',
@@ -50,7 +51,7 @@ server.register(fastifySwagger, {
 	transform: jsonSchemaTransform,
 })
 server.register(fastifySwaggerUi, {
-	routePrefix: '/docs',
+	routePrefix: '/swagger',
 	logLevel: 'silent',
 })
 
@@ -63,6 +64,7 @@ server.register(LinkCreateRoute)
 server.register(LinkDeleteRoute)
 server.register(LinkFindAllRoute)
 server.register(LinkFindByIdRoute)
+server.register(LinkFindByUrlShortRoute)
 server.register(LinkIncrementAccessCountRoute)
 server.register(ExportAllLinksToCsvRoute)
 

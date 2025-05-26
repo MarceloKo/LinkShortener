@@ -12,7 +12,7 @@ export default function LinkCreate() {
         console.log('Dados do formulário:', data)
     }
 
-    const domain = window.location.host + '/';
+    const domain = `${window.location.host}/`;
 
 
     return (

@@ -13,7 +13,7 @@ export const LinkFindAllRoute: FastifyPluginAsyncZod = async server => {
                 tags: ['link'],
             },
         },
-        async (_req, reply) => {
+        async (_, reply) => {
             const link = await PrismaService.links.findMany()
             return reply.status(200).send(responseSuccess("Links encontrados com sucesso", link))
 
