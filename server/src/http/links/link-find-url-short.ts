@@ -22,6 +22,7 @@ export const LinkFindByUrlShortRoute: FastifyPluginAsyncZod = async server => {
             const link = await PrismaService.links.findUnique({
                 where: { urlShort: url }
             })
+
             if (!link) {
                 return reply.status(404).send(responseFail("Link não encontrado"))
             }

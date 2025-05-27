@@ -3,13 +3,30 @@ import Input from "../../../components/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { linkSchema, type LinkFormData } from "./schemas/create-schema";
 import { useForm } from "react-hook-form";
+import { useMutationLinkCreate } from "../../../querys/links";
+import { toast } from "react-toastify";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function LinkCreate() {
-    const { handleSubmit, register, formState: { isSubmitting, errors } } = useForm({ resolver: zodResolver(linkSchema), mode: 'onChange', shouldFocusError: true })
+    const { handleSubmit, register, reset, setFocus, formState: { errors } } = useForm({ resolver: zodResolver(linkSchema), mode: 'onChange', shouldFocusError: true })
 
+    const { mutate, isPending } = useMutationLinkCreate()
+    const queryClient = useQueryClient();
 
     const onSubmit = (data: LinkFormData) => {
-        console.log('Dados do formulário:', data)
+        mutate(data, {
+            onSuccess: () => {
+                reset();
+
+                toast.success('Link criado com sucesso!', { autoClose: 1000 });
+                queryClient.invalidateQueries({ queryKey: ['GET_LINKS'] });
+
+            },
+            onError: (error) => {
+                toast.error(error.message, { autoClose: 3000 })
+                setFocus('urlShort', { shouldSelect: true })
+            }
+        });
     }
 
     const domain = `${window.location.host}/`;
@@ -36,7 +53,7 @@ export default function LinkCreate() {
                     prefix={domain}
 
                 />
-                <Button type="submit" loading={isSubmitting}>Salvar link</Button>
+                <Button type="submit" disabled={isPending} loading={isPending}>Salvar link</Button>
             </form>
         </div>
     )

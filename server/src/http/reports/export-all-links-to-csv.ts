@@ -9,7 +9,7 @@ import { PassThrough, Readable } from "node:stream"
 import { pipeline } from "node:stream/promises"
 
 export const ExportAllLinksToCsvRoute: FastifyPluginAsyncZod = async server => {
-    server.post(
+    server.get(
         '/export-links/csv',
         {
             schema: {

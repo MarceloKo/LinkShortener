@@ -34,11 +34,8 @@ export const LinkIncrementAccessCountRoute: FastifyPluginAsyncZod = async server
                 }
             })
 
-            const payloadResponse = {
-                id: linkUpdated.id,
-                countAccess: linkUpdated.countAccess
-            }
-            return reply.status(200).send(responseSuccess("Contador de acessos atualizado com sucesso", payloadResponse))
+
+            return reply.status(200).send(responseSuccess("Contador de acessos atualizado com sucesso", linkUpdated))
         }
     )
 }
