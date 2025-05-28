@@ -35,3 +35,4 @@ Além disso, também temos algumas regras importantes específicas para o front-
 - [X] - Migrar de Prisma para Drizzle
 - [X] - Atualizar .envs.examples
 - [ ] - Dockerfile backend
+- [ ] - Adicionar Readme de execução do projeto
