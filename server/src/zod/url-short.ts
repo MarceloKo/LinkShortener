@@ -4,10 +4,10 @@ export const urlShortSchema = z.string({
     message: 'Informe o link encurtado',
 }).min(1, {
     message: 'Informe o link encurtado',
-}).regex(/^[a-zA-Z0-9]+$/, {
-    message: 'O link encurtado deve conter apenas letras e números',
+}).regex(/^[a-zA-Z0-9_-]+$/, {
+    message: 'O link encurtado deve conter apenas letras, números, hífen (-) e sublinhado (_)',
 }).max(40, {
-    message: 'O link encurtado deve ter no máximo 20 caracteres',
+    message: 'O link encurtado deve ter no máximo 40 caracteres',
 }).transform((value) => value.toLowerCase())
     .refine((value) => {
         if (value.startsWith('http://') || value.startsWith('https://')) {

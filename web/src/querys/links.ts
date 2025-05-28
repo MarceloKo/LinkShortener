@@ -23,20 +23,13 @@ export const useQueryLinkFindByUrlShort = (urlShort: string) => {
             return await api.get<responseSuccessApi<Link>>(`/link/url-short/${urlShort}`).then((response) => {
                 return response.data.response
             })
-        }
+        },
+        retry: false,
+
     })
 }
 
-export const useQueryLinkFindByShortUrl = (shortUrl: string) => {
-    return useQuery({
-        queryKey: ['GET_LINK_FIND_BY_SHORT_URL', shortUrl],
-        queryFn: async () => {
-            return await api.get<responseSuccessApi<Link>>(`/link/url-short/${shortUrl}`).then((response) => {
-                return response.data.response
-            })
-        }
-    })
-}
+
 
 export const useMutationLinkIncrementAccessCount = () => {
     return useMutation({

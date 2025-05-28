@@ -5,7 +5,6 @@ import { fastifySwaggerUi } from '@fastify/swagger-ui'
 import { fastify } from 'fastify'
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 
-import { PrismaService } from '@prisma/prisma-service'
 
 import handleError from './utils/api-handle-errors'
 import { LinkCreateRoute } from './http/links/link-create'
@@ -15,6 +14,7 @@ import { LinkFindByIdRoute } from './http/links/link-find'
 import { LinkIncrementAccessCountRoute } from './http/links/link-increment-access'
 import { ExportAllLinksToCsvRoute } from './http/reports/export-all-links-to-csv'
 import { LinkFindByUrlShortRoute } from './http/links/link-find-url-short'
+import { db } from './database'
 const server = fastify({
 	logger: true,
 })
@@ -72,10 +72,8 @@ server.register(ExportAllLinksToCsvRoute)
 server
 	.listen({ port: env.PORT || 8000, host: '0.0.0.0' })
 	.then(async () => {
-		await PrismaService.$connect()
 		console.info(`[ 🚀 RUNNING MODE ]: ${env.NODE_ENV.toUpperCase()}\n`)
 	})
 	.catch(async err => {
 		console.error(err)
-		await PrismaService.$disconnect()
 	})

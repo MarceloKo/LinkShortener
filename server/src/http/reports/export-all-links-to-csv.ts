@@ -1,12 +1,15 @@
+import { db, pg } from "@/database"
+import { schema } from "@/database/schemas"
 import { uploadFileToStorage } from "@/functions/storage/upload-file-to-storage"
 import { responseSuccess } from "@/utils/api-response"
 import { uuidV7ToDate } from "@/utils/uuid-to-date"
-import { PrismaService } from "@prisma/prisma-service"
 import { env } from "@zod/env"
 import { stringify } from "csv-stringify"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
-import { PassThrough, Readable } from "node:stream"
+import { PassThrough, Transform } from "node:stream"
 import { pipeline } from "node:stream/promises"
+
+type Link = typeof schema.links.$inferSelect
 
 export const ExportAllLinksToCsvRoute: FastifyPluginAsyncZod = async server => {
     server.get(
@@ -19,47 +22,59 @@ export const ExportAllLinksToCsvRoute: FastifyPluginAsyncZod = async server => {
             },
         },
         async (_, reply) => {
-            const take = 1000
-            const dataStream = Readable.from(
-                (async function* () {
-                    let cursor: string | undefined
+            const { sql, params } = db
+                .select()
+                .from(schema.links)
+                .toSQL()
 
-                    while (true) {
-                        const batch = await PrismaService.links.findMany({
-                            take,
-                            skip: cursor ? 1 : 0,
-                            cursor: cursor ? { id: cursor } : undefined,
-                            orderBy: { id: 'asc' },
-                        })
+            const cursor = pg.unsafe(sql, params as string[]).cursor(2)
 
-                        if (batch.length === 0) break
 
-                        for (const row of batch) yield [row.urlDestination, `${env.DOMAIN_WEB}/${row.urlShort}`, row.countAccess, uuidV7ToDate(row.id)?.toISOString()]
-
-                        if (batch.length < take) break
-                        cursor = batch[batch.length - 1].id
-                    }
-                })()
-            )
-
-            const pass = new PassThrough()
-
-            const csvStringifier = stringify({
+            const csv = stringify({
                 header: true,
-                columns: ['URL Original', 'URL Encurtada', 'Contagem de Acessos', 'Data de Criacao'],
+                columns: [{
+                    key: 'urlDestination',
+                    header: 'URL de destino',
+                }, {
+                    key: 'urlShort',
+                    header: 'URL encurtada',
+                }, {
+                    key: 'countAccess',
+                    header: 'Contagem de acessos',
+                }, {
+                    key: 'createdAt',
+                    header: 'Data de criacao',
+                }],
                 delimiter: ',',
             })
+
+            const uploadToStorageStream = new PassThrough()
+
+            const convertToCSVPipeline = pipeline(
+                cursor,
+                new Transform({
+                    objectMode: true,
+                    transform(chunks: Link[], _, callback) {
+                        for (const chunk of chunks) {
+                            this.push({
+                                ...chunk,
+                                createdAt: uuidV7ToDate(chunk.id)?.toISOString()
+                            })
+                        }
+                        callback()
+                    },
+                }),
+                csv,
+                uploadToStorageStream
+            )
 
             const uploadPromise = uploadFileToStorage({
                 contentType: 'text/csv',
                 folder: 'reports-links',
                 fileName: `${new Date().toISOString()}.csv`,
-                contentStream: pass,
+                contentStream: uploadToStorageStream,
             })
-
-            const convertLinksToCSV = pipeline(dataStream, csvStringifier, pass)
-
-            const [{ url }] = await Promise.all([uploadPromise, convertLinksToCSV])
+            const [{ url }] = await Promise.all([uploadPromise, convertToCSVPipeline])
 
             return reply.status(200).send(
                 responseSuccess("Links exported successfully", {

@@ -1,6 +1,8 @@
+import { db } from "@/database"
+import { schema } from "@/database/schemas"
 import { responseFail, responseSuccess } from "@/utils/api-response"
-import { PrismaService } from "@prisma/prisma-service"
 import { urlShortSchema } from "@zod/url-short"
+import { eq } from "drizzle-orm"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import { z } from "zod"
 
@@ -27,22 +29,19 @@ export const LinkCreateRoute: FastifyPluginAsyncZod = async server => {
             const { urlDestination, urlShort } = req.body
 
 
-            const existUrl = await PrismaService.links.findFirst({
-                where: { urlShort }
-            })
+            const existUrl = await db.select().from(schema.links)
+                .where(eq(schema.links.urlShort, urlShort)).limit(1)
 
-            if (existUrl) {
+            if (existUrl.length > 0) {
                 return reply.status(400).send(responseFail("Link encurtado já existe"))
             }
 
-            const newLink = await PrismaService.links.create({
-                data: {
-                    urlDestination,
-                    urlShort
-                }
-            })
+            const newLink = await db.insert(schema.links).values({
+                urlShort,
+                urlDestination,
+            }).returning()
 
-            return reply.status(201).send(responseSuccess("Link criado com sucesso", newLink))
+            return reply.status(201).send(responseSuccess("Link criado com sucesso", newLink[0]))
 
         }
     )

@@ -12,9 +12,9 @@ export const linkSchema = z.object({
         required_error: 'Informe o link encurtado',
     }).min(1, {
         message: 'Informe o link encurtado',
-    }).regex(/^[a-zA-Z0-9]+$/, {
-        message: 'O link encurtado deve conter apenas letras e números',
-    }).max(20, {
+    }).regex(/^[a-zA-Z0-9_-]+$/, {
+        message: 'O link encurtado deve conter apenas letras, números, hífen (-) e sublinhado (_)',
+    }).max(40, {
         message: 'O link encurtado deve ter no máximo 20 caracteres',
     }).transform((value) => value.toLowerCase())
 })

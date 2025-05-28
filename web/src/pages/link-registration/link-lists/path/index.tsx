@@ -41,19 +41,19 @@ export default function Path({ data }: { data: PathProps }) {
 
     return (
         <div className="flex justify-between items-center">
-            <div>
+            <div className="max-w-[150px] sm:max-w-[250px] lg:max-w-[300px] ">
                 <a
                     target="_blank"
                     rel="noopener noreferrer"
                     href={urlWithDomain.href}
-                    className="text-blue-700 font-semibold "
+                    className="text-blue-700 font-semibold truncate block"
                     title={urlWithDomain.href}
                 >
-                    {urlWithDomain.href}
+                    {urlWithDomain.href.replace(`${urlWithDomain.protocol}//`, '')}
                 </a>
-                <p className="text-gray-500 line-clamp-1">{urlDestination}</p>
+                <p className="text-gray-500 truncate block">{urlDestination}</p>
             </div>
-            <div className="flex items-center gap-5 justify-end">
+            <div className="flex items-center gap-2 justify-end md:gap-5">
                 <p className="text-gray-500 text-center">{countAccess} acessos</p>
                 <div className="flex gap-2 flex-wrap justify-end w-min md:w-auto md:flex-nowrap">
                     <Button typeButton="secondary" icon={<FiCopy size={20} />} onClick={handleCopy} />

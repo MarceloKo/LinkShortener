@@ -1,6 +1,8 @@
+import { db } from "@/database"
+import { schema } from "@/database/schemas"
 import { responseFail, responseSuccess } from "@/utils/api-response"
-import { PrismaService } from "@prisma/prisma-service"
 import { idSchema } from "@zod/id-uuid"
+import { eq, sql } from "drizzle-orm"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import { z } from "zod"
 
@@ -20,20 +22,20 @@ export const LinkIncrementAccessCountRoute: FastifyPluginAsyncZod = async server
         },
         async (req, reply) => {
             const { id } = req.params
-            const link = await PrismaService.links.findUnique({
-                where: { id }
-            })
-            if (!link) {
+            const link = await db.select().from(schema.links).where(
+                eq(schema.links.id, id)
+            ).limit(1)
+
+
+            if (link.length === 0) {
                 return reply.status(404).send(responseFail("Link não encontrado"))
             }
 
-            const linkUpdated = await PrismaService.links.update({
-                where: { id },
-                data: {
-                    countAccess: { increment: 1 }
-                }
-            })
-
+            const linkUpdated = await db.update(schema.links).set({
+                countAccess: sql`${schema.links.countAccess} + 1`
+            }).where(
+                eq(schema.links.id, id)
+            )
 
             return reply.status(200).send(responseSuccess("Contador de acessos atualizado com sucesso", linkUpdated))
         }
