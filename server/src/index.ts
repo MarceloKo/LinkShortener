@@ -14,10 +14,7 @@ import { LinkFindByIdRoute } from './http/links/link-find'
 import { LinkIncrementAccessCountRoute } from './http/links/link-increment-access'
 import { ExportAllLinksToCsvRoute } from './http/reports/export-all-links-to-csv'
 import { LinkFindByUrlShortRoute } from './http/links/link-find-url-short'
-import { db } from './database'
-const server = fastify({
-	logger: true,
-})
+const server = fastify()
 
 server.setValidatorCompiler(validatorCompiler)
 server.setSerializerCompiler(serializerCompiler)
@@ -31,21 +28,6 @@ server.register(fastifySwagger, {
 			title: 'LinkShortner API',
 			version: '1.0.0',
 		},
-		components: {
-			securitySchemes: {
-				clientId: {
-					type: 'apiKey',
-					name: 'clientId',
-					in: 'header',
-				},
-				clientSecret: {
-					type: 'apiKey',
-					name: 'clientSecret',
-					in: 'header',
-				},
-			},
-		},
-		security: [{ clientId: [] }, { clientSecret: [] }],
 		servers: [],
 	},
 	transform: jsonSchemaTransform,

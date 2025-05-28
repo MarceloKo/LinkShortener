@@ -1,5 +1,6 @@
 
 import logo from '../../../assets/logo-icon.svg'
+
 export default function LinkRedirecting() {
     return (
         <div className='flex flex-col items-center text-center justify-center gap-10'>

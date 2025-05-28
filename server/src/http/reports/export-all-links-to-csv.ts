@@ -3,7 +3,6 @@ import { schema } from "@/database/schemas"
 import { uploadFileToStorage } from "@/functions/storage/upload-file-to-storage"
 import { responseSuccess } from "@/utils/api-response"
 import { uuidV7ToDate } from "@/utils/uuid-to-date"
-import { env } from "@zod/env"
 import { stringify } from "csv-stringify"
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import { PassThrough, Transform } from "node:stream"
@@ -27,7 +26,7 @@ export const ExportAllLinksToCsvRoute: FastifyPluginAsyncZod = async server => {
                 .from(schema.links)
                 .toSQL()
 
-            const cursor = pg.unsafe(sql, params as string[]).cursor(2)
+            const cursor = pg.unsafe(sql, params as string[]).cursor(50)
 
 
             const csv = stringify({

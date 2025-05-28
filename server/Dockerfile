@@ -1,9 +1,8 @@
-FROM node:lts-alpine AS builder
+FROM node:latest AS builder
 WORKDIR /app
 COPY . .
 RUN yarn
-RUN yarn prisma generate
-# RUN yarn add typescript
+RUN yarn db:generate
 RUN yarn build
 
 

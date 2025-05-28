@@ -1,4 +1,4 @@
-import { pgTable, text, integer, index, uniqueIndex } from "drizzle-orm/pg-core"
+import { pgTable, text, integer } from "drizzle-orm/pg-core"
 import { uuidv7 } from 'uuidv7'
 
 export const links = pgTable("links", {
