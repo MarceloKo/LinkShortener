@@ -1,38 +1,50 @@
-<!-- BACKEND -->
-- [X]  Deve ser possível criar um link
-    - [X]  Não deve ser possível criar um link com URL encurtada mal formatada
-    - [X]  Não deve ser possível criar um link com URL encurtada já existente
-- [X]  Deve ser possível deletar um link
-- [X]  Deve ser possível obter a URL original por meio de uma URL encurtada
-- [X]  Deve ser possível listar todas as URL’s cadastradas
-- [X]  Deve ser possível incrementar a quantidade de acessos de um link
-- [X]  Deve ser possível exportar os links criados em um CSV
-    - [X]  Deve ser possível acessar o CSV por meio de uma CDN (Amazon S3, Cloudflare R2, etc)
-    - [X]  Deve ser gerado um nome aleatório e único para o arquivo
-    - [X]  Deve ser possível realizar a listagem de forma performática
-    - [X]  O CSV deve ter campos como, URL original, URL encurtada, contagem de acessos e data de criação.
+# Desafio de Pós-Graduação – Brev.ly
 
+O **Brev.ly** é um encurtador de URLs de alta performance, desenvolvido com foco em uma arquitetura, documentação clara e validações rigorosas em todas as camadas da aplicação.
 
-<!-- FRONTEND -->
+---
 
-- [X]  Deve ser possível criar um link
-    - [X]  Não deve ser possível criar um link com encurtamento mal formatado
-    - [X]  Não deve ser possível criar um link com encurtamento já existente
-- [X]  Deve ser possível deletar um link
-- [X]  Deve ser possível obter a URL original por meio do encurtamento
-- [X]  Deve ser possível listar todas as URL’s cadastradas
-- [X]  Deve ser possível incrementar a quantidade de acessos de um link
-- [X]  Deve ser possível baixar um CSV com o relatório dos links criados
+## 📚 Visão Geral
 
-Além disso, também temos algumas regras importantes específicas para o front-end:
+Este repositório contém:
 
-- [X]  É obrigatória a criação de uma aplicação React no formato SPA utilizando o Vite como `bundler`;
-- [X]  Siga o mais fielmente possível o layout do Figma;
-- [X]  Trabalhe com elementos que tragam uma boa experiência ao usuário (`empty state`, ícones de carregamento, bloqueio de ações a depender do estado da aplicação);
-- [X]  Foco na responsividade: essa aplicação deve ter um bom uso tanto em desktops quanto em celulares.
+- **Back-end**  
+  - Linguagem: TypeScript  
+  - Framework: Fastify  
+  - ORM: Drizzle  
+  - Banco de dados: PostgreSQL  
 
-<!-- PENDENCIAS -->
-- [X] - Migrar de Prisma para Drizzle
-- [X] - Atualizar .envs.examples
-- [ ] - Dockerfile backend
-- [ ] - Adicionar Readme de execução do projeto
+- **Front-end**  
+  - Framework: React (gerado com Vite)  
+  - Estilização: Tailwind CSS  
+
+---
+
+## ⚙️ Pré-requisitos
+
+Antes de iniciar, certifique-se de ter instalado em sua máquina:
+
+- Node.js (v16 ou superior)  
+- Yarn ou npm  
+- Docker & Docker Compose (opcional, para execução em contêineres)  
+- Conta e credenciais para armazenamento de CSV em CDN (S3, R2, etc.)
+
+---
+
+## 🛠️ Instalação
+
+1. **Clone o repositório**  
+   ```bash
+   git clone https://github.com/seu-usuario/brev.ly.git
+   cd brev.ly
+   ```
+2. ** Instale as dependências **
+    ```bash
+    # Usando Yarn
+    yarn install
+
+    # Ou usando npm
+    npm install
+    ```
+3. ** Clone as variaveis de ambiente **
+    Copie o arquivo .env.example e renomeie para .env, alterando as informações dentro.
