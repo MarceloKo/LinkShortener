@@ -7,3 +7,14 @@ services:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=service
+  # Uncomment the following lines to enable the server service
+  # server:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '8000:8000'
+  #   depends_on:
+  #     - pg
+  #   env_file:
+  #     - .env

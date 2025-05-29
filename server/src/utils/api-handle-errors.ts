@@ -1,9 +1,9 @@
-import { Prisma } from '@prisma/client'
 import { AxiosError } from 'axios'
 import type { FastifyError, FastifyReply, FastifyRequest } from 'fastify'
 import { hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 import { responseFail } from './api-response'
+import { DrizzleError } from 'drizzle-orm'
 
 export default function handleError(error: FastifyError, request: FastifyRequest, reply: FastifyReply) {
 	const dataError = {
@@ -17,14 +17,10 @@ export default function handleError(error: FastifyError, request: FastifyRequest
 		hostname: request.hostname,
 	}
 	if (error) {
-		if (error instanceof Prisma.PrismaClientKnownRequestError) {
-
-			console.log(`🔥 [ERROR PRISMA] ${error?.message}`)
-			dataError.messageErro = error?.message || 'Erro interno CODE:1'
-
-			dataError.message = 'Erro ao realizar requisição ao banco de dados'
-
-			return reply.status(400).send(responseFail([error?.message || 'Erro interno CODE:1']))
+		if (error instanceof DrizzleError) {
+			console.log('🔥 [ERROR DRIZZLE]', error.message)
+			dataError.message = 'Erro ao acessar o banco de dados'
+			return reply.status(500).send(responseFail([error.message]))
 		}
 		if (error instanceof AxiosError) {
 			const errorMessage = JSON.stringify(error.response?.data)
