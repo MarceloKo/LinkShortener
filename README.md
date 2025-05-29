@@ -35,10 +35,10 @@ Antes de iniciar, certifique-se de ter instalado em sua máquina:
 
 1. **Clone o repositório**  
    ```bash
-   git clone https://github.com/seu-usuario/brev.ly.git
-   cd brev.ly
+   git clone https://github.com/MarceloKo/LinkShortener.git
+   cd LinkShortener
    ```
-2. ** Instale as dependências **
+2. **Instale as dependências**
     ```bash
     # Usando Yarn
     yarn install
@@ -46,5 +46,19 @@ Antes de iniciar, certifique-se de ter instalado em sua máquina:
     # Ou usando npm
     npm install
     ```
-3. ** Clone as variaveis de ambiente **
+3. **Clone as variaveis de ambiente**
     Copie o arquivo .env.example e renomeie para .env, alterando as informações dentro.
+4. **Docker compose**
+    Caso precise de um banco de dados é possivel levantar um local.
+     ```bash
+     docker-compose up -d
+     ```
+
+5. **Execute o projeto**
+    ```bash
+    # Usando Yarn
+    yarn dev
+
+    # Ou usando npm
+    npm run dev
+    ```
