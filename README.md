@@ -1,10 +1,9 @@
 # Desafio de Pós-Graduação – Brev.ly
 
-O **Brev.ly** é um encurtador de URLs de alta performance, desenvolvido com foco em uma arquitetura, documentação clara e validações rigorosas em todas as camadas da aplicação.
+O **Brev.ly** é um encurtador de URLs de alta performance, desenvolvido com foco em uma arquitetura simples e aproveitando o máximos das stacks.
 
----
 
-## 📚 Visão Geral
+## 💻 Tecnologias
 
 Este repositório contém:
 
@@ -18,8 +17,6 @@ Este repositório contém:
   - Framework: React (gerado com Vite)  
   - Estilização: Tailwind CSS  
 
----
-
 ## ⚙️ Pré-requisitos
 
 Antes de iniciar, certifique-se de ter instalado em sua máquina:
@@ -29,7 +26,6 @@ Antes de iniciar, certifique-se de ter instalado em sua máquina:
 - Docker & Docker Compose (opcional, para execução em contêineres)  
 - Conta e credenciais para armazenamento de CSV em CDN (S3, R2, etc.)
 
----
 
 ## 🛠️ Instalação
 
@@ -46,13 +42,13 @@ Antes de iniciar, certifique-se de ter instalado em sua máquina:
     # Ou usando npm
     npm install
     ```
-3. **Clone as variaveis de ambiente**
-    Copie o arquivo .env.example e renomeie para .env, alterando as informações dentro.
-4. **Docker compose**
+3. **Docker compose**  
     Caso precise de um banco de dados é possivel levantar um local.
      ```bash
      docker-compose up -d
      ```
+4. **Clone as variaveis de ambiente**  
+    Copie o arquivo .env.example e renomeie para .env alterando as informações dentro, no frontend e backend.
 
 5. **Execute o projeto**
     ```bash
